@@ -74,12 +74,13 @@ function createPolaroids() {
     { left: '80%', top: '12%', rot: '5deg',   duration: '6.5s', delay: '1.2s' },
     { left: '75%', top: '62%', rot: '-4deg',  duration: '7s',   delay: '0.5s' },
     { left: '3%',  top: '65%', rot: '7deg',   duration: '5s',   delay: '2s'   },
+    { left: '82%', top: '37%', rot: '-3deg',  duration: '5.8s', delay: '0.8s' },
   ];
 
-  // 4 fotos random de la galería (sin repetir). Si hay menos de 4, el resto muestra tulipán.
+  // Pick random photos from the gallery (no repeats). If there are fewer than needed, the rest show the tulip placeholder.
   const pool = [...(CONFIG.photos || [])];
   const picked = [];
-  while (picked.length < 4 && pool.length > 0) {
+  while (picked.length < positions.length && pool.length > 0) {
     const idx = Math.floor(Math.random() * pool.length);
     picked.push(pool.splice(idx, 1)[0]);
   }
