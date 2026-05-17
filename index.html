@@ -207,7 +207,7 @@
       <div class="section-inner">
         <span class="section-tag">nosotros dos</span>
         <h2 class="section-title">Planes <em>&amp; metas</em></h2>
-        <p class="planes-hint">Editen el Sheet y al recargar aparece aquí 💜</p>
+        <p class="planes-hint">Toca ✓ para marcar como hecho 💜</p>
         <div class="planes-list" id="planes-list">
           <div class="planes-loading">
             <svg width="28" height="48" style="color:#c084fc"><use href="#tulip"/></svg>
@@ -412,6 +412,56 @@
   </div>
 
 </div><!-- /main-content -->
+
+<!-- FAB: Añadir Plan -->
+<button class="section-fab" id="fab-add-plan" onclick="openAddPlanModal()">+</button>
+
+<!-- FAB: Añadir Momento -->
+<button class="section-fab" id="fab-add-momento" onclick="openAddMomentoModal()">+</button>
+
+<!-- MODAL: Añadir Plan -->
+<div id="add-plan-modal" class="edit-modal hidden">
+  <div class="edit-modal-content">
+    <button class="edit-modal-close" onclick="closeAddPlanModal()">✕</button>
+    <h3 class="edit-modal-title">Nuevo plan 🌟</h3>
+    <div class="edit-modal-field">
+      <label>Emoji</label>
+      <input type="text" id="plan-emoji-input" placeholder="🏖️" maxlength="4" />
+    </div>
+    <div class="edit-modal-field">
+      <label>Plan *</label>
+      <input type="text" id="plan-name-input" placeholder="Ej: Ir a la playa juntos" />
+    </div>
+    <div class="edit-modal-field">
+      <label>Descripción (opcional)</label>
+      <input type="text" id="plan-desc-input" placeholder="Ej: Antes de que acabe el año" />
+    </div>
+    <p class="edit-modal-error" id="add-plan-error"></p>
+    <button class="edit-modal-submit" id="add-plan-submit" onclick="submitNewPlan()">Agregar 💜</button>
+  </div>
+</div>
+
+<!-- MODAL: Añadir / Editar Momento -->
+<div id="add-momento-modal" class="edit-modal hidden">
+  <div class="edit-modal-content">
+    <button class="edit-modal-close" onclick="closeAddMomentoModal()">✕</button>
+    <h3 class="edit-modal-title" id="momento-modal-title">Nuevo momento ✨</h3>
+    <div class="edit-modal-field">
+      <label>Fecha *</label>
+      <input type="text" id="momento-date-input" placeholder="Ej: Junio 2025" />
+    </div>
+    <div class="edit-modal-field">
+      <label>Evento *</label>
+      <input type="text" id="momento-event-input" placeholder="Ej: Primera cita" />
+    </div>
+    <div class="edit-modal-field">
+      <label>Descripción (opcional)</label>
+      <input type="text" id="momento-desc-input" placeholder="Ej: Lo que pasó ese día..." />
+    </div>
+    <p class="edit-modal-error" id="add-momento-error"></p>
+    <button class="edit-modal-submit" id="add-momento-submit" onclick="submitMomento()">Guardar 💜</button>
+  </div>
+</div>
 
 <!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox hidden">

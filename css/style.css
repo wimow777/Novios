@@ -1676,27 +1676,160 @@ section { padding:6rem 1.5rem; position:relative; overflow:hidden; }
    PREMIUM BUTTON & LIGHTBOX DELETE STYLES
    ═══════════════════════════════════════ */
 .lock-enter-btn {
-  background: linear-gradient(135deg, var(--lila) 0%, var(--lila-lt) 100%);
+  position: relative;
+  background: rgba(168, 85, 247, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   color: white;
-  border: none;
+  border: 1.5px solid rgba(210, 160, 255, 0.55);
   border-radius: 50px;
-  padding: 0.9rem 2.6rem;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 500;
+  padding: 1.05rem 3rem;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.3rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.35);
+  letter-spacing: 0.02em;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 22px rgba(168, 85, 247, 0.28), inset 0 1px 0 rgba(255,255,255,0.12);
   outline: none;
   user-select: none;
+  overflow: hidden;
+}
+.lock-enter-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 55%;
+  height: 200%;
+  background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.22) 50%, transparent 80%);
+  animation: lockBtnShimmer 2.8s infinite 1.2s;
+  pointer-events: none;
+}
+@keyframes lockBtnShimmer {
+  0%   { left: -100% }
+  100% { left: 160%  }
 }
 .lock-enter-btn:hover {
-  transform: translateY(-3px) scale(1.04);
-  box-shadow: 0 8px 24px rgba(168, 85, 247, 0.5);
+  transform: translateY(-5px) scale(1.07);
+  background: rgba(168, 85, 247, 0.28);
+  border-color: rgba(232, 121, 249, 0.85);
+  box-shadow: 0 0 44px rgba(168, 85, 247, 0.52), 0 0 80px rgba(168, 85, 247, 0.18), inset 0 1px 0 rgba(255,255,255,0.18);
 }
 .lock-enter-btn:active {
   transform: translateY(-1px) scale(0.97);
 }
+
+/* ── Botón flotante añadir plan/momento ── */
+.section-fab {
+  display: none;
+  position: fixed;
+  bottom: 2rem;
+  right: 1.5rem;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--lila), var(--lila-lt));
+  color: white;
+  font-size: 1.6rem;
+  line-height: 1;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(168,85,247,0.45);
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s;
+  z-index: 80;
+  align-items: center;
+  justify-content: center;
+}
+.section-fab:hover { transform: scale(1.12); box-shadow: 0 6px 24px rgba(168,85,247,0.6); }
+.section-fab.visible { display: flex; }
+
+/* ── Modal genérico editar/añadir ── */
+.edit-modal {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(15,10,30,0.72);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+}
+.edit-modal.hidden { display: none; }
+.edit-modal-content {
+  background: linear-gradient(160deg, #1e1030 0%, #150d28 100%);
+  border: 1px solid rgba(168,85,247,0.35);
+  border-radius: 20px;
+  padding: 2rem 1.8rem;
+  width: 100%; max-width: 420px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.edit-modal-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: none; border: none; color: rgba(200,180,240,0.5);
+  font-size: 1.1rem; cursor: pointer;
+}
+.edit-modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem; color: white;
+  margin: 0 0 1.4rem;
+}
+.edit-modal-field {
+  display: flex; flex-direction: column; gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+.edit-modal-field label {
+  font-size: 0.78rem; color: rgba(200,180,240,0.6); font-family: 'Inter', sans-serif;
+}
+.edit-modal-field input {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(168,85,247,0.3);
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.edit-modal-field input:focus { border-color: rgba(168,85,247,0.7); }
+.edit-modal-error { color: #fca5a5; font-size: 0.8rem; min-height: 1.2em; margin-bottom: 0.5rem; }
+.edit-modal-submit {
+  width: 100%;
+  background: linear-gradient(135deg, var(--lila), var(--lila-lt));
+  color: white; border: none; border-radius: 50px;
+  padding: 0.85rem; font-size: 0.95rem; font-weight: 500;
+  cursor: pointer; transition: opacity 0.2s, transform 0.2s;
+}
+.edit-modal-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+.edit-modal-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ── Botón eliminar en tarjetas de planes ── */
+.plan-delete-btn {
+  background: none; border: none;
+  color: rgba(252,165,165,0.35);
+  font-size: 0.95rem; cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  transition: color 0.2s, transform 0.2s;
+  flex-shrink: 0;
+}
+.plan-delete-btn:hover { color: #fca5a5; transform: scale(1.2); }
+
+/* ── Botones editar/eliminar en timeline ── */
+.timeline-actions {
+  display: flex; gap: 0.4rem; margin-top: 0.5rem; opacity: 0;
+  transition: opacity 0.2s;
+}
+.timeline-item:hover .timeline-actions { opacity: 1; }
+.timeline-action-btn {
+  background: none; border: none;
+  font-size: 0.78rem; cursor: pointer;
+  padding: 0.2rem 0.5rem; border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.timeline-action-btn.edit  { color: rgba(196,181,253,0.6); }
+.timeline-action-btn.edit:hover  { background: rgba(168,85,247,0.15); color: #c4b5fd; }
+.timeline-action-btn.delete { color: rgba(252,165,165,0.5); }
+.timeline-action-btn.delete:hover { background: rgba(239,68,68,0.12); color: #fca5a5; }
 
 .lightbox-delete-btn {
   position: absolute;
@@ -1740,3 +1873,141 @@ section { padding:6rem 1.5rem; position:relative; overflow:hidden; }
   transform: translateX(-50%) !important;
   box-shadow: none !important;
 }
+
+/* ============================================================
+   TOAST NOTIFICATION (PREMIUM ANIVERSARIO SYSTEM)
+   ============================================================ */
+.toast-container {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 90%;
+  max-width: 380px;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  background: rgba(253, 250, 246, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(168, 85, 247, 0.25);
+  border-radius: 50px;
+  padding: 0.75rem 1.4rem;
+  box-shadow: 
+    0 12px 32px rgba(168, 85, 247, 0.15),
+    0 4px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+             toastOut 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) 4.6s forwards;
+  will-change: transform, opacity;
+}
+
+.toast-success {
+  border-color: rgba(168, 85, 247, 0.25);
+}
+
+.toast-error {
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(254, 242, 242, 0.92);
+}
+
+.toast-icon {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-message {
+  flex: 1;
+  line-height: 1.3;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toastOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+}
+
+/* ============================================================
+   TEMPORARY UPLOADING IMAGES
+   ============================================================ */
+.gallery-item.is-temp {
+  border-color: rgba(168, 85, 247, 0.45) !important;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.15) !important;
+  pointer-events: none; /* Disable opening lightbox for pending uploads */
+}
+
+.gallery-item.is-temp img {
+  opacity: 0.45;
+  filter: blur(2px);
+}
+
+.gallery-item.is-temp::after {
+  content: 'Sincronizando... ⌛';
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 2, 36, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  padding-top: 2rem;
+  animation: tempPulse 2s infinite ease-in-out;
+  z-index: 2;
+}
+
+.gallery-item.is-temp::before {
+  content: '💜';
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8rem;
+  animation: heartBeat 1.2s infinite ease-in-out;
+  z-index: 3;
+}
+
+@keyframes tempPulse {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 0.95; }
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.25); }
+}
+
