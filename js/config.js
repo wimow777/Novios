@@ -39,31 +39,5 @@ const CONFIG = {
     // { src: "img/album/foto3.jpg", caption: "" },
   ],
 
-  moments: [
-    {
-      date: "Noviembre 2022",
-      event: "Cuando nos conocimos",
-      desc: "Todavía no sabíamos lo que vendría. Pero algo empezó ahí."
-    },
-    {
-      date: "17 de mayo, 2025",
-      event: "La primera noche como novios",
-      desc: "Flores, lluvia, comida buena. Y tú que te fuiste a dormir con las flores."
-    },
-    {
-      date: "Junio 2025",
-      event: "Haikyuu y pizza en casa de Riki",
-      desc: "Juntarnos y terminar viendo anime juntos. El partido del Shiratorizawa nos esperaba."
-    },
-    {
-      date: "Todo el año",
-      event: "INTEC, tapones y todo lo demás",
-      desc: "Parciales, profes insoportables, bolas, apagones — y nosotros en medio de todo eso igual."
-    },
-    {
-      date: "Mayo 2026",
-      event: "Un año juntos",
-      desc: "Llegamos. Y ojalá que sean muchos más, mi reinaa."
-    },
-  ]
+  moments: []
 };

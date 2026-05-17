@@ -68,6 +68,7 @@ function createRain() {
 function createPolaroids() {
   const container = document.getElementById('float-frames');
   if (!container) return;
+  container.innerHTML = '';
 
   const positions = [
     { left: '6%',  top: '18%', rot: '-6deg',  duration: '5.5s', delay: '0s'   },

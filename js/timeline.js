@@ -28,7 +28,7 @@ async function loadTimeline() {
               desc:  desc  ? desc.toString()  : ''
             });
           });
-          if (parsedMoments.length > 0) CONFIG.moments = parsedMoments;
+          CONFIG.moments = parsedMoments;
         }
       }
     } catch (err) {
@@ -66,10 +66,6 @@ function buildTimeline() {
     `;
     container.appendChild(item);
   });
-
-  // FAB visible si está configurado
-  const fab = document.getElementById('fab-add-momento');
-  if (fab && canEdit) fab.classList.add('visible');
 }
 
 function initScrollReveal() {

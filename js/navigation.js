@@ -8,6 +8,26 @@ function showView(id) {
   const next = document.getElementById('view-' + id);
   if (!next || next === currentView) return;
 
+  // Controlar la visibilidad de los botones flotantes (FAB) de acuerdo a la vista activa
+  const fabAddPlan = document.getElementById('fab-add-plan');
+  const fabAddMomento = document.getElementById('fab-add-momento');
+  
+  if (fabAddPlan) {
+    if (id === 'planes' && !!CONFIG.sheetsUpdateUrl) {
+      fabAddPlan.classList.add('visible');
+    } else {
+      fabAddPlan.classList.remove('visible');
+    }
+  }
+  
+  if (fabAddMomento) {
+    if (id === 'momentos' && !!CONFIG.sheetsUpdateUrl) {
+      fabAddMomento.classList.add('visible');
+    } else {
+      fabAddMomento.classList.remove('visible');
+    }
+  }
+
   if (currentView) {
     currentView.classList.remove('active');
   }

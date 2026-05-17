@@ -6,12 +6,12 @@ function getDays() {
   return Math.floor((new Date() - CONFIG.startDate) / 86400000);
 }
 
-// Convierte {id, name} de Drive → {src, caption, id} que usa la página
+// Convierte {id, name, caption, src} de Drive → {src, caption, id} que usa la página
 function drivePhotosToConfig(drivePhotos) {
   return (drivePhotos || []).map(p => ({
-    src:     `https://lh3.googleusercontent.com/d/${p.id}`,
-    caption: p.name || '',
-    id:      p.id
+    id:      p.id || '',
+    src:     p.src || (p.id ? `https://lh3.googleusercontent.com/d/${p.id}` : ''),
+    caption: p.caption || p.name || ''
   }));
 }
 
@@ -22,11 +22,7 @@ async function loadPhotosFromDrive() {
     const res  = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
     const data = await res.json();
     if (data && data.photos && data.photos.length > 0) {
-      CONFIG.photos = data.photos.map(p => ({
-        id: p.id || '',
-        src: p.src || (p.id ? "https://lh3.googleusercontent.com/d/" + p.id : ''),
-        caption: p.caption || p.name || ''
-      }));
+      CONFIG.photos = drivePhotosToConfig(data.photos);
     }
   } catch (err) {
     console.error('Error al cargar fotos de Google Drive:', err);

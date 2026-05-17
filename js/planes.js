@@ -110,10 +110,6 @@ function renderPlanes(items) {
   container.querySelectorAll('.reveal').forEach((el, i) => {
     setTimeout(() => el.classList.add('visible'), 80 + i * 90);
   });
-
-  // Mostrar FAB solo si está configurado
-  const fab = document.getElementById('fab-add-plan');
-  if (fab && hasUpdateUrl) fab.classList.add('visible');
 }
 
 // ── Añadir plan ──────────────────────────────────────────────

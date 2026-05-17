@@ -170,16 +170,48 @@ async function submitPhoto() {
   submitBtn.disabled = true;
   submitBtn.classList.add('is-uploading');
 
-  // Si el usuario escribió un pie de foto, ese será el nombre del archivo en Drive
-  // (nuestra web usa automáticamente el nombre del archivo como caption de la galería)
   let uploadFileName = selectedFile.fileName;
   const userCaption = captionInput.value.trim();
   if (userCaption) {
-    // Sanitizar nombre de archivo básico (eliminar caracteres no permitidos en sistemas de archivos)
+    // Sanitizar nombre de archivo básico
     const sanitizedCaption = userCaption.replace(/[\\\/:*?"<>|]/g, '');
     if (sanitizedCaption) {
       uploadFileName = sanitizedCaption + '.jpg';
     }
+  }
+
+  const tempId = 'temp_' + Date.now();
+  
+  // 1. Crear foto optimista local y agregarla al inicio de CONFIG.photos
+  const optimisticPhoto = {
+    id: tempId,
+    src: `data:image/jpeg;base64,${selectedFile.base64Data}`, // base64 temporal
+    caption: userCaption || '',
+    isTemp: true // Activa shimmer y latido de corazón en CSS
+  };
+
+  CONFIG.photos = CONFIG.photos || [];
+  CONFIG.photos.unshift(optimisticPhoto);
+  
+  // 2. Re-renderizar Galería y Polaroids al instante
+  buildGallery();
+  if (typeof createPolaroids === 'function') {
+    createPolaroids();
+  }
+
+  // 3. Desplazar vista de la galería al inicio de forma suave para ver la nueva foto
+  const viewGaleria = document.getElementById('view-galeria');
+  if (viewGaleria) {
+    viewGaleria.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // 4. Cerrar el modal de carga y restaurar botones de inmediato
+  closeUploadModal();
+  submitBtn.disabled = false;
+  submitBtn.classList.remove('is-uploading');
+  
+  if (typeof showToast === 'function') {
+    showToast('¡Subiendo foto! Se mostrará en la galería mientras se guarda... 💜', 'success');
   }
 
   const payload = {
@@ -191,7 +223,7 @@ async function submitPhoto() {
   };
 
   try {
-    // Usamos POST con modo 'no-cors' para saltar restricciones de CORS de Apps Script
+    // Ejecutar la petición en segundo plano
     await fetch(CONFIG.sheetsUpdateUrl, {
       method: 'POST',
       mode: 'no-cors',
@@ -201,7 +233,7 @@ async function submitPhoto() {
       body: JSON.stringify(payload)
     });
 
-    // Esperar 5s para que Google Drive indexe el nuevo archivo antes de refrescar
+    // 5. Esperar 4.5s e iniciar sincronización silenciosa
     setTimeout(async () => {
       try {
         const res = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
@@ -209,23 +241,28 @@ async function submitPhoto() {
         if (data && data.photos) {
           CONFIG.photos = drivePhotosToConfig(data.photos);
           buildGallery();
+          if (typeof createPolaroids === 'function') {
+            createPolaroids();
+          }
+          if (typeof showToast === 'function') {
+            showToast('¡Foto sincronizada con Google Drive con éxito! 💜', 'success');
+          }
         }
       } catch (err) {
-        console.error('Error al refrescar fotos:', err);
+        console.error('Error al sincronizar fotos tras subida:', err);
       }
-      
-      // Mostrar éxito visual, cerrar modal
-      submitBtn.classList.remove('is-uploading');
-      closeUploadModal();
-      
-      // Mostrar una notificación de éxito o disparar confeti si se desea
-      alert('¡Foto subida con éxito! Ya se encuentra en la galería 💜');
-    }, 5000);
+    }, 4500);
 
   } catch (err) {
-    console.error('Error en la carga:', err);
-    errorMsg.textContent = 'Hubo un error de conexión al subir la foto. Inténtalo de nuevo.';
-    submitBtn.disabled = false;
-    submitBtn.classList.remove('is-uploading');
+    console.error('Error en la carga en Drive:', err);
+    // Quitar la foto temporal de la vista si falló totalmente la red
+    CONFIG.photos = CONFIG.photos.filter(p => p.id !== tempId);
+    buildGallery();
+    if (typeof createPolaroids === 'function') {
+      createPolaroids();
+    }
+    if (typeof showToast === 'function') {
+      showToast('Error de conexión al subir la foto a Google Drive 😢', 'error');
+    }
   }
 }
