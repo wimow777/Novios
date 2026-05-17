@@ -99,7 +99,7 @@ def main():
     draw.text((400, 310), "UN AÑO JUNTOS", fill=(220, 180, 255, 255), font=font_pretitle, anchor="mm")
     
     # Título principal
-    draw.text((400, 420), "Para ti,\nmi reina", fill=(255, 255, 255, 255), font=font_title, anchor="mm", align="center")
+    draw.text((400, 420), "Para ti,\nmi Loviuu", fill=(255, 255, 255, 255), font=font_title, anchor="mm", align="center")
     
     # Dibujar corazón blanco brillante programático
     draw_heart(draw, xc=400, yc=530, size=24, color=(255, 255, 255, 255))
