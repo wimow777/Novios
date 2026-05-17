@@ -16,7 +16,7 @@ const CONFIG = {
 
   // 5. [OPCIONAL] Para marcar como hecho/pendiente desde la página web:
   //    Crea un Google Apps Script en tu Sheet, publícalo como Web App y pega la URL aquí:
-  sheetsUpdateUrl: "https://script.google.com/macros/s/AKfycbxljaj8p6h-mYLIcMFEnk-nlazm9h8ecLhteGbrsFcuPaM3e2E8py7Yyj77qyuTa5c1/exec",
+  sheetsUpdateUrl: "https://script.google.com/macros/s/AKfycby4md3lXcFmUZyCt_Z0485Jlby9MPqohKTcBVVIvVtYZsBgxBPC35s4--_O_DlBEQbI/exec",
 
   // 6. [OPCIONAL] Para cargar TODAS tus fotos automáticamente desde una carpeta de Google Drive:
   //    Crea una carpeta en Google Drive, compártela como "Cualquier persona con el enlace" (lector),
