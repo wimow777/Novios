@@ -12,7 +12,7 @@ const CONFIG = {
   // 2. Archivo → Compartir → "Cualquier persona con el enlace" (solo lectura)
   // 3. Copia el ID del link: docs.google.com/spreadsheets/d/[ESTE_ID]/edit
   // 4. Pega abajo reemplazando TU_SHEET_ID
-  sheetsUrl: "https://docs.google.com/spreadsheets/d/1GCzx4Fe8Al75Ue2sVV33eZbqrlbO6DjJtND7w_to7OI/gviz/tq?tqx=out:json&sheet=Sheet1",
+  sheetsUrl: "https://docs.google.com/spreadsheets/d/1B54bGOcCBammuZ_ShrcYPnfmyepbJLUPg1SkAJCuqIY/gviz/tq?tqx=out:json",
 
   // 5. [OPCIONAL] Para marcar como hecho/pendiente desde la página web:
   //    Crea un Google Apps Script en tu Sheet, publícalo como Web App y pega la URL aquí:
