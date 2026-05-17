@@ -6,6 +6,29 @@ function getDays() {
   return Math.floor((new Date() - CONFIG.startDate) / 86400000);
 }
 
+// Convierte {id, name} de Drive → {src, caption, id} que usa la página
+function drivePhotosToConfig(drivePhotos) {
+  return (drivePhotos || []).map(p => ({
+    src:     `https://lh3.googleusercontent.com/d/${p.id}`,
+    caption: p.name || '',
+    id:      p.id
+  }));
+}
+
+// Pide fotos al Apps Script y actualiza CONFIG.photos
+async function loadPhotosFromDrive() {
+  if (!CONFIG.googleDriveFolderId || !CONFIG.sheetsUpdateUrl) return;
+  try {
+    const res  = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
+    const data = await res.json();
+    if (data.photos && data.photos.length > 0) {
+      CONFIG.photos = drivePhotosToConfig(data.photos);
+    }
+  } catch (err) {
+    console.error('Error al cargar fotos de Google Drive:', err);
+  }
+}
+
 async function initPage() {
   const days = getDays();
   animateDaysCounter('days-count', days);
@@ -17,20 +40,8 @@ async function initPage() {
   await loadTimeline();
   showView('home');
 
-  // Cargar fotos desde Google Drive si está configurado
-  if (CONFIG.googleDriveFolderId && CONFIG.sheetsUpdateUrl) {
-    try {
-      const res = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
-      const data = await res.json();
-      if (data && data.photos && data.photos.length > 0) {
-        CONFIG.photos = data.photos;
-      }
-    } catch (err) {
-      console.error('Error al cargar fotos de Google Drive:', err);
-    }
-  }
+  await loadPhotosFromDrive();
 
-  // Ahora que las fotos están cargadas, creamos la galería y los polaroids
   createPolaroids();
   buildGallery();
 }
