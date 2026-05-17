@@ -21,7 +21,7 @@ const CONFIG = {
   // 6. [OPCIONAL] Para cargar TODAS tus fotos automáticamente desde una carpeta de Google Drive:
   //    Crea una carpeta en Google Drive, compártela como "Cualquier persona con el enlace" (lector),
   //    y pega el ID de la carpeta aquí (el código largo al final del link de la carpeta):
-  googleDriveFolderId: "",
+  googleDriveFolderId: "1A7yPvXrgOzis2ZARpbeksgvBI4VKA1AG",
 
   // ════════════════════════════════════════════════════════════
   //  FOTOS — una sola lista, todo va a img/album/
