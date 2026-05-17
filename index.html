@@ -276,8 +276,16 @@
     <section id="galeria">
       <svg class="deco-tulip galeria-l" style="color:#e9d5ff"><use href="#tulip"/></svg>
       <div class="section-inner">
-        <span class="section-tag">nosotros</span>
-        <h2 class="section-title">Momentos guardados</h2>
+        <div class="gallery-header-wrap">
+          <div>
+            <span class="section-tag">nosotros</span>
+            <h2 class="section-title">Momentos guardados</h2>
+          </div>
+          <button class="gallery-upload-trigger" id="upload-trigger-btn" onclick="openUploadModal()" style="display:none">
+            <span class="upload-trigger-icon">📤</span>
+            <span class="upload-trigger-text">Subir Foto</span>
+          </button>
+        </div>
         <div class="gallery-grid" id="gallery-grid">
           <div class="gallery-placeholder">
             <svg width="40" height="68" style="color:#c084fc;margin-bottom:.8rem"><use href="#tulip"/></svg>
@@ -412,9 +420,40 @@
   <p id="lightbox-caption"></p>
 </div>
 
+<!-- UPLOAD MODAL -->
+<div id="upload-modal" class="upload-modal hidden">
+  <div class="upload-modal-content">
+    <button class="upload-modal-close" onclick="closeUploadModal()">✕</button>
+    <h3 class="upload-modal-title">Subir un momento 📸</h3>
+    <p class="upload-modal-sub">Se guardará directamente en tu Google Drive y aparecerá en la galería automáticamente.</p>
+    
+    <div class="upload-drag-area" id="upload-drag-area" onclick="triggerFileSelect()">
+      <div class="drag-area-inner" id="drag-area-inner">
+        <span class="drag-icon">📤</span>
+        <span class="drag-text">Toca aquí para seleccionar una foto</span>
+        <span class="drag-hint">Soporta JPG, PNG, WebP</span>
+      </div>
+      <input type="file" id="upload-file-input" accept="image/*" style="display:none" onchange="handleFileSelect(event)" />
+    </div>
+
+    <div class="upload-input-group">
+      <label for="upload-caption-input" class="upload-label">¿Qué título o descripción le pones?</label>
+      <input type="text" id="upload-caption-input" placeholder="Ej: Nuestra primera cita... (opcional)" autocomplete="off" />
+    </div>
+
+    <button class="upload-submit-btn" id="upload-submit-btn" onclick="submitPhoto()" disabled>
+      <span class="submit-btn-text">Subir foto ✨</span>
+      <span class="submit-btn-spinner"></span>
+    </button>
+    
+    <p id="upload-error-msg" class="upload-error-msg"></p>
+  </div>
+</div>
+
 <script src="js/config.js"></script>
 <script src="js/animations.js"></script>
 <script src="js/gallery.js"></script>
+<script src="js/upload.js"></script>
 <script src="js/timeline.js"></script>
 <script src="js/planes.js"></script>
 <script src="js/navigation.js"></script>
