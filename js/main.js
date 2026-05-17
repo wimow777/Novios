@@ -21,8 +21,12 @@ async function loadPhotosFromDrive() {
   try {
     const res  = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
     const data = await res.json();
-    if (data.photos && data.photos.length > 0) {
-      CONFIG.photos = drivePhotosToConfig(data.photos);
+    if (data && data.photos && data.photos.length > 0) {
+      CONFIG.photos = data.photos.map(p => ({
+        id: p.id || '',
+        src: p.src || (p.id ? "https://lh3.googleusercontent.com/d/" + p.id : ''),
+        caption: p.caption || p.name || ''
+      }));
     }
   } catch (err) {
     console.error('Error al cargar fotos de Google Drive:', err);
