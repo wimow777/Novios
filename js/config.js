@@ -18,6 +18,11 @@ const CONFIG = {
   //    Crea un Google Apps Script en tu Sheet, publícalo como Web App y pega la URL aquí:
   sheetsUpdateUrl: "https://script.google.com/macros/s/AKfycbxljaj8p6h-mYLIcMFEnk-nlazm9h8ecLhteGbrsFcuPaM3e2E8py7Yyj77qyuTa5c1/exec",
 
+  // 6. [OPCIONAL] Para cargar TODAS tus fotos automáticamente desde una carpeta de Google Drive:
+  //    Crea una carpeta en Google Drive, compártela como "Cualquier persona con el enlace" (lector),
+  //    y pega el ID de la carpeta aquí (el código largo al final del link de la carpeta):
+  googleDriveFolderId: "",
+
   // ════════════════════════════════════════════════════════════
   //  FOTOS — una sola lista, todo va a img/album/
   //
