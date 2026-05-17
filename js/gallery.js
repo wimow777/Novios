@@ -93,67 +93,66 @@ function closeLightbox() {
   document.body.style.overflow = '';
 }
 
-async function deleteCurrentPhoto() {
+function deleteCurrentPhoto() {
   if (!currentPhotoId) return;
   
-  const confirmDelete = confirm('¿De verdad quieres eliminar esta foto permanentemente de tu Google Drive? 😢');
-  if (!confirmDelete) return;
+  showConfirm('¿De verdad quieres eliminar esta foto permanentemente de tu Google Drive? 😢', async () => {
+    const originalPhotos = [...CONFIG.photos];
+    const targetId = currentPhotoId;
 
-  const originalPhotos = [...CONFIG.photos];
-  const targetId = currentPhotoId;
-
-  // 1. Actualización Optimista e Inmediata de la UI
-  CONFIG.photos = CONFIG.photos.filter(p => p.id !== targetId);
-  buildGallery();
-  
-  if (typeof createPolaroids === 'function') {
-    createPolaroids();
-  }
-
-  closeLightbox();
-  showToast('¡Foto eliminada! Sincronizando con Google Drive... 🗑️', 'success');
-
-  // 2. Ejecutar petición en segundo plano sin interrumpir al usuario
-  try {
-    await fetch(CONFIG.sheetsUpdateUrl, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'text/plain'
-      },
-      body: JSON.stringify({
-        action: 'deletePhoto',
-        fileId: targetId
-      })
-    });
-
-    // 3. Sincronización silenciosa en background tras 4 segundos
-    setTimeout(async () => {
-      try {
-        const res = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
-        const data = await res.json();
-        if (data && data.photos) {
-          CONFIG.photos = drivePhotosToConfig(data.photos);
-          buildGallery();
-          if (typeof createPolaroids === 'function') {
-            createPolaroids();
-          }
-        }
-      } catch (err) {
-        console.error('Error al resincronizar fotos tras eliminación:', err);
-      }
-    }, 4000);
-
-  } catch (err) {
-    console.error('Error al borrar la foto en Drive:', err);
-    // Rollback optimista en caso de error
-    CONFIG.photos = originalPhotos;
+    // 1. Actualización Optimista e Inmediata de la UI
+    CONFIG.photos = CONFIG.photos.filter(p => p.id !== targetId);
     buildGallery();
+    
     if (typeof createPolaroids === 'function') {
       createPolaroids();
     }
-    showToast('Error de conexión al eliminar. Se ha restaurado la foto en pantalla.', 'error');
-  }
+
+    closeLightbox();
+    showToast('¡Foto eliminada! Sincronizando con Google Drive... 🗑️', 'success');
+
+    // 2. Ejecutar petición en segundo plano sin interrumpir al usuario
+    try {
+      await fetch(CONFIG.sheetsUpdateUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify({
+          action: 'deletePhoto',
+          fileId: targetId
+        })
+      });
+
+      // 3. Sincronización silenciosa en background tras 4 segundos
+      setTimeout(async () => {
+        try {
+          const res = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
+          const data = await res.json();
+          if (data && data.photos) {
+            CONFIG.photos = drivePhotosToConfig(data.photos);
+            buildGallery();
+            if (typeof createPolaroids === 'function') {
+              createPolaroids();
+            }
+          }
+        } catch (err) {
+          console.error('Error al resincronizar fotos tras eliminación:', err);
+        }
+      }, 4000);
+
+    } catch (err) {
+      console.error('Error al borrar la foto en Drive:', err);
+      // Rollback optimista en caso de error
+      CONFIG.photos = originalPhotos;
+      buildGallery();
+      if (typeof createPolaroids === 'function') {
+        createPolaroids();
+      }
+      showToast('Error de conexión al eliminar. Se ha restaurado la foto en pantalla.', 'error');
+    }
+  });
 }
 
 document.getElementById('lightbox').addEventListener('click', e => {

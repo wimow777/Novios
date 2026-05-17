@@ -3,6 +3,7 @@
 // ============================================================
 
 let _planesLoaded = false;
+let _loadedPlanes = [];
 
 async function buildPlanes() {
   if (_planesLoaded) return;
@@ -46,7 +47,8 @@ async function buildPlanes() {
                estadoLower !== 'd';
       });
 
-    renderPlanes(items);
+    _loadedPlanes = items;
+    renderPlanes(_loadedPlanes);
     _planesLoaded = true;
 
   } catch (err) {
@@ -80,6 +82,9 @@ function renderPlanes(items) {
 
     card.className = `plan-card reveal estado-${estadoKey} ${hasUpdateUrl ? 'is-interactive' : ''}`;
     card.style.setProperty('--d', `${i * 0.08}s`);
+    if (item.isTemp) {
+      card.classList.add('is-temp');
+    }
 
     const toggleBtn = hasUpdateUrl ? `
       <button class="plan-toggle-btn" title="Marcar como hecho/pendiente" onclick="togglePlanStatus(event, this, '${item.plan.replace(/'/g, "\\'")}', '${item.estado.replace(/'/g, "\\'")}')">
@@ -139,9 +144,29 @@ async function submitNewPlan() {
 
   if (!name) { errEl.textContent = 'El nombre del plan es obligatorio.'; return; }
 
-  btn.disabled = true;
-  btn.textContent = 'Guardando...';
-  errEl.textContent = '';
+  const tempId = 'temp_' + Date.now();
+
+  // 1. Crear plan optimista y agregarlo al inicio de _loadedPlanes
+  const optimisticPlan = {
+    id: tempId,
+    emoji,
+    plan: name,
+    desc,
+    estado: 'Pendiente',
+    isTemp: true
+  };
+
+  _loadedPlanes.unshift(optimisticPlan);
+  
+  // 2. Re-renderizar planes al instante
+  renderPlanes(_loadedPlanes);
+
+  // 3. Cerrar modal y limpiar
+  closeAddPlanModal();
+  
+  if (typeof showToast === 'function') {
+    showToast('¡Plan añadido! Sincronizando con Google Sheets... 🗺️', 'success');
+  }
 
   try {
     await fetch(CONFIG.sheetsUpdateUrl, {
@@ -151,39 +176,73 @@ async function submitNewPlan() {
       body: JSON.stringify({ action: 'addPlan', emoji, plan: name, desc, estado: 'Pendiente' })
     });
 
-    closeAddPlanModal();
-    _planesLoaded = false;
-    await new Promise(r => setTimeout(r, 1200));
-    await buildPlanes();
+    // 4. Esperar 4.5 segundos e iniciar sincronización silenciosa
+    setTimeout(async () => {
+      try {
+        _planesLoaded = false;
+        await buildPlanes();
+        if (typeof showToast === 'function') {
+          showToast('¡Planes sincronizados con Google Sheets! 💜', 'success');
+        }
+      } catch (err) {
+        console.error('Error al sincronizar planes tras adición:', err);
+      }
+    }, 4500);
 
   } catch (err) {
-    errEl.textContent = 'Error de conexión. Inténtalo de nuevo.';
-    btn.disabled = false;
-    btn.textContent = 'Agregar 💜';
+    console.error('Error al subir plan a Sheets:', err);
+    // Rollback optimista
+    _loadedPlanes = _loadedPlanes.filter(p => p.id !== tempId);
+    renderPlanes(_loadedPlanes);
+    if (typeof showToast === 'function') {
+      showToast('Error de conexión al añadir el plan. Inténtalo de nuevo.', 'error');
+    }
   }
 }
 
 // ── Eliminar plan ─────────────────────────────────────────────
 
-async function deletePlan(event, planName) {
+function deletePlan(event, planName) {
   event.stopPropagation();
-  if (!confirm(`¿Eliminar el plan "${planName}"?`)) return;
+  
+  showConfirm(`¿De verdad quieres eliminar el plan "${planName}"? 😢`, async () => {
+    const originalPlanes = [..._loadedPlanes];
 
-  try {
-    await fetch(CONFIG.sheetsUpdateUrl, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ action: 'deletePlan', plan: planName })
-    });
+    // 1. Actualización Optimista de la UI
+    _loadedPlanes = _loadedPlanes.filter(p => p.plan !== planName);
+    renderPlanes(_loadedPlanes);
 
-    _planesLoaded = false;
-    await new Promise(r => setTimeout(r, 1000));
-    await buildPlanes();
+    if (typeof showToast === 'function') {
+      showToast('¡Plan eliminado! Sincronizando con Google Sheets... 🗑️', 'success');
+    }
 
-  } catch (err) {
-    alert('Error al eliminar. Inténtalo de nuevo.');
-  }
+    try {
+      await fetch(CONFIG.sheetsUpdateUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'deletePlan', plan: planName })
+      });
+
+      // 2. Silenciosa sincronización en background
+      setTimeout(async () => {
+        try {
+          _planesLoaded = false;
+          await buildPlanes();
+        } catch (err) {
+          console.error('Error al sincronizar planes tras eliminación:', err);
+        }
+      }, 4000);
+
+    } catch (err) {
+      console.error('Error al eliminar plan:', err);
+      // Rollback optimista
+      _loadedPlanes = originalPlanes;
+      renderPlanes(_loadedPlanes);
+      
+      showAlert('Error al eliminar. Revisa tu conexión a internet.');
+    }
+  });
 }
 
 // ── Toggle estado ─────────────────────────────────────────────

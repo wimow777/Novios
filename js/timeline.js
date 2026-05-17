@@ -48,8 +48,11 @@ function buildTimeline() {
   CONFIG.moments.forEach((m, i) => {
     const item = document.createElement('div');
     item.className = 'timeline-item reveal';
+    if (m.isTemp) {
+      item.classList.add('is-temp');
+    }
 
-    const actions = canEdit ? `
+    const actions = canEdit && !m.isTemp ? `
       <div class="timeline-actions">
         <button class="timeline-action-btn edit" onclick="openEditMomentoModal(${i})">✏️ editar</button>
         <button class="timeline-action-btn delete" onclick="deleteMomento(${i})">✕ eliminar</button>
@@ -133,16 +136,36 @@ async function submitMomento() {
 
   if (!date || !event) { errEl.textContent = 'La fecha y el evento son obligatorios.'; return; }
 
-  btn.disabled = true;
-  btn.textContent = 'Guardando...';
-  errEl.textContent = '';
-
+  const tempId = 'temp_' + Date.now();
   const isEdit = _editingMomentoIndex !== null;
+  const originalMoments = [...CONFIG.moments];
+
+  // 1. UI Optimista: Aplicar cambio en memoria de inmediato
+  const tempMomento = { date, event, desc, id: tempId, isTemp: true };
+
+  if (isEdit) {
+    CONFIG.moments[_editingMomentoIndex] = { date, event, desc, isTemp: true };
+  } else {
+    CONFIG.moments.push(tempMomento);
+  }
+
+  // 2. Re-renderizar línea de tiempo al instante
+  buildTimeline();
+  document.getElementById('timeline-items').querySelectorAll('.reveal').forEach((el) => {
+    el.classList.add('visible');
+  });
+
+  closeAddMomentoModal();
+
+  if (typeof showToast === 'function') {
+    showToast(isEdit ? '¡Actualizando momento en Sheets! ⏳' : '¡Momento guardado! Sincronizando con Google Sheets... ⏳', 'success');
+  }
+
   const payload = {
     action: isEdit ? 'editMomento' : 'addMomento',
     date, event, desc
   };
-  if (isEdit) payload.originalDate = CONFIG.moments[_editingMomentoIndex].date;
+  if (isEdit) payload.originalDate = originalMoments[_editingMomentoIndex].date;
 
   try {
     await fetch(CONFIG.sheetsUpdateUrl, {
@@ -152,47 +175,75 @@ async function submitMomento() {
       body: JSON.stringify(payload)
     });
 
-    if (isEdit) {
-      CONFIG.moments[_editingMomentoIndex] = { date, event, desc };
-    } else {
-      CONFIG.moments.push({ date, event, desc });
-    }
-
-    closeAddMomentoModal();
-    buildTimeline();
-    document.getElementById('timeline-items').querySelectorAll('.reveal').forEach((el, i) => {
-      setTimeout(() => el.classList.add('visible'), 60 + i * 80);
-    });
+    // 3. Esperar 4.5 segundos e iniciar sincronización silenciosa
+    setTimeout(async () => {
+      try {
+        await loadTimeline();
+        if (typeof showToast === 'function') {
+          showToast('¡Línea de tiempo sincronizada con éxito! 💜', 'success');
+        }
+      } catch (err) {
+        console.error('Error al sincronizar timeline tras acción:', err);
+      }
+    }, 4500);
 
   } catch (err) {
-    errEl.textContent = 'Error de conexión. Inténtalo de nuevo.';
-    btn.disabled = false;
-    btn.textContent = 'Guardar 💜';
+    console.error('Error al enviar momento:', err);
+    // Rollback en caso de fallo total de red
+    CONFIG.moments = originalMoments;
+    buildTimeline();
+    
+    if (typeof showToast === 'function') {
+      showToast('Error de conexión. Se han restaurado los datos anteriores.', 'error');
+    }
   }
 }
 
 // ── Eliminar momento ──────────────────────────────────────────
 
-async function deleteMomento(index) {
+function deleteMomento(index) {
   const m = CONFIG.moments[index];
   if (!m) return;
-  if (!confirm(`¿Eliminar "${m.event}"?`)) return;
 
-  try {
-    await fetch(CONFIG.sheetsUpdateUrl, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ action: 'deleteMomento', date: m.date, event: m.event })
-    });
+  showConfirm(`¿De verdad quieres eliminar el momento "${m.event}"? 😢`, async () => {
+    const originalMoments = [...CONFIG.moments];
 
+    // 1. Actualización Optimista de la UI
     CONFIG.moments.splice(index, 1);
     buildTimeline();
-    document.getElementById('timeline-items').querySelectorAll('.reveal').forEach((el, i) => {
-      setTimeout(() => el.classList.add('visible'), 60 + i * 80);
+    
+    document.getElementById('timeline-items').querySelectorAll('.reveal').forEach((el) => {
+      el.classList.add('visible');
     });
 
-  } catch (err) {
-    alert('Error al eliminar. Inténtalo de nuevo.');
-  }
+    if (typeof showToast === 'function') {
+      showToast('¡Momento eliminado! Sincronizando en background... 🗑️', 'success');
+    }
+
+    try {
+      await fetch(CONFIG.sheetsUpdateUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'deleteMomento', date: m.date, event: m.event })
+      });
+
+      // 2. Silenciosa sincronización tras 4 segundos
+      setTimeout(async () => {
+        try {
+          await loadTimeline();
+        } catch (err) {
+          console.error('Error al resincronizar timeline tras borrar:', err);
+        }
+      }, 4000);
+
+    } catch (err) {
+      console.error('Error en delete fetch:', err);
+      // Rollback optimista
+      CONFIG.moments = originalMoments;
+      buildTimeline();
+      
+      showAlert('Error de conexión al eliminar. Inténtalo de nuevo.');
+    }
+  });
 }

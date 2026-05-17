@@ -2007,3 +2007,108 @@ section { padding:6rem 1.5rem; position:relative; overflow:hidden; }
   50% { transform: translate(-50%, -50%) scale(1.25); }
 }
 
+/* ── Custom Confirm/Alert Dialog Modal ── */
+.custom-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 10, 25, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.custom-dialog-content {
+  background: rgba(25, 18, 38, 0.65);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1.5px solid rgba(168, 85, 247, 0.28);
+  border-radius: 24px;
+  width: 90%;
+  max-width: 380px;
+  padding: 2.2rem 1.8rem;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: scale(0.92);
+  animation: scaleIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.custom-dialog-icon {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  animation: pulseHeart 1.6s infinite ease-in-out;
+}
+
+.custom-dialog-message {
+  font-family: 'Inter', sans-serif;
+  color: #f3f0ff;
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  letter-spacing: -0.01em;
+}
+
+.custom-dialog-buttons {
+  display: flex;
+  gap: 0.9rem;
+  justify-content: center;
+}
+
+.custom-dialog-btn {
+  flex: 1;
+  padding: 0.8rem 1.4rem;
+  border-radius: 50px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.custom-dialog-btn.cancel-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  color: rgba(230, 220, 255, 0.85);
+}
+
+.custom-dialog-btn.cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.custom-dialog-btn.confirm-btn {
+  background: linear-gradient(135deg, var(--lila) 0%, var(--lila-lt) 100%);
+  border: none;
+  color: white;
+  box-shadow: 0 6px 18px rgba(168, 85, 247, 0.35);
+}
+
+.custom-dialog-btn.confirm-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(168, 85, 247, 0.52);
+}
+
+.custom-dialog-btn.confirm-btn:active {
+  transform: translateY(0);
+}
+
+/* ── Custom Dialog Animaciones ── */
+@keyframes pulseHeart {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.15); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.15); }
+  70% { transform: scale(1); }
+}
+
+@keyframes scaleIn {
+  to { transform: scale(1); }
+}
+

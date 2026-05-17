@@ -1,4 +1,65 @@
 // ============================================================
+//  DIÁLOGOS DE CONFIRMACIÓN Y ALERTA PREMIUM CUSTOM
+// ============================================================
+function showConfirm(message, onConfirm) {
+  const modal = document.getElementById('custom-dialog-modal');
+  const msgEl = document.getElementById('custom-dialog-message');
+  const cancelBtn = document.getElementById('custom-dialog-cancel');
+  const confirmBtn = document.getElementById('custom-dialog-confirm');
+  
+  if (!modal || !msgEl || !cancelBtn || !confirmBtn) {
+    if (confirm(message)) onConfirm();
+    return;
+  }
+  
+  msgEl.textContent = message;
+  cancelBtn.style.display = 'inline-block';
+  confirmBtn.textContent = 'Confirmar';
+  
+  // Clonar para limpiar eventos previos
+  const newCancel = cancelBtn.cloneNode(true);
+  const newConfirm = confirmBtn.cloneNode(true);
+  cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+  confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
+  
+  newCancel.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+  
+  newConfirm.addEventListener('click', () => {
+    modal.classList.add('hidden');
+    onConfirm();
+  });
+  
+  modal.classList.remove('hidden');
+}
+
+function showAlert(message) {
+  const modal = document.getElementById('custom-dialog-modal');
+  const msgEl = document.getElementById('custom-dialog-message');
+  const cancelBtn = document.getElementById('custom-dialog-cancel');
+  const confirmBtn = document.getElementById('custom-dialog-confirm');
+  
+  if (!modal || !msgEl || !cancelBtn || !confirmBtn) {
+    alert(message);
+    return;
+  }
+  
+  msgEl.textContent = message;
+  cancelBtn.style.display = 'none';
+  confirmBtn.textContent = 'Entendido';
+  
+  const newConfirm = confirmBtn.cloneNode(true);
+  confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
+  
+  newConfirm.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+  
+  modal.classList.remove('hidden');
+}
+
+// ============================================================
 //  NAVEGACIÓN ENTRE VISTAS
 // ============================================================
 
