@@ -14,7 +14,7 @@ async function initPage() {
   createNotes();
   createCierreSparkles();
   if (typeof initSectionDecos === 'function') initSectionDecos('carta');
-  buildTimeline();
+  await loadTimeline();
   showView('home');
 
   // Cargar fotos desde Google Drive si está configurado
@@ -22,7 +22,7 @@ async function initPage() {
     try {
       const res = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
       const data = await res.json();
-      if (data.status === 'success' && data.photos && data.photos.length > 0) {
+      if (data && data.photos && data.photos.length > 0) {
         CONFIG.photos = data.photos;
       }
     } catch (err) {

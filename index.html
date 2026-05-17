@@ -71,12 +71,12 @@
     </div>
     <p class="lock-pretitle">un año juntos 💜</p>
     <h1 class="lock-title">Este lugar es nuestro</h1>
-    <p class="lock-subtitle">¿cuál es nuestra palabra?</p>
-    <div class="lock-input-wrap">
-      <input type="password" id="password-input" placeholder="escribe aquí..." autocomplete="off" spellcheck="false"/>
-      <button id="enter-btn" onclick="checkPassword()">→</button>
+    <p class="lock-subtitle">Bienvenida, mi reinaa ✨</p>
+    <div class="lock-input-wrap" style="justify-content: center; margin-top: 1.8rem;">
+      <button id="enter-btn" class="lock-enter-btn" onclick="unlockPage()">
+        <span>Abrir nuestro espacio 💜</span>
+      </button>
     </div>
-    <p id="error-msg" class="error-msg"></p>
   </div>
 </div>
 
@@ -418,6 +418,9 @@
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <img id="lightbox-img" src="" alt=""/>
   <p id="lightbox-caption"></p>
+  <button id="lightbox-delete-btn" class="lightbox-delete-btn" onclick="deleteCurrentPhoto()" style="display:none">
+    <span>Eliminar Foto 🗑️</span>
+  </button>
 </div>
 
 <!-- UPLOAD MODAL -->

@@ -207,7 +207,7 @@ async function submitPhoto() {
       try {
         const res = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
         const data = await res.json();
-        if (data.status === 'success' && data.photos) {
+        if (data && data.photos) {
           CONFIG.photos = data.photos;
           buildGallery();
         }

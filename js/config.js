@@ -3,8 +3,6 @@
 // ============================================================
 
 const CONFIG = {
-  password: "nosotros",
-
   startDate: new Date(2025, 4, 17),   // 17 mayo 2025
 
   // ── Google Sheets → Planes & Metas ───────────────────────
@@ -13,6 +11,11 @@ const CONFIG = {
   // 3. Copia el ID del link: docs.google.com/spreadsheets/d/[ESTE_ID]/edit
   // 4. Pega abajo reemplazando TU_SHEET_ID
   sheetsUrl: "https://docs.google.com/spreadsheets/d/1B54bGOcCBammuZ_ShrcYPnfmyepbJLUPg1SkAJCuqIY/gviz/tq?tqx=out:json",
+
+  // ── Google Sheets → Línea de Tiempo (Momentos) ─────────────
+  // Crea una nueva pestaña llamada "Momentos" en el mismo Google Sheet
+  // con columnas: Fecha | Evento | Descripción (comparte la misma visibilidad)
+  timelineUrl: "https://docs.google.com/spreadsheets/d/1B54bGOcCBammuZ_ShrcYPnfmyepbJLUPg1SkAJCuqIY/gviz/tq?tqx=out:json&sheet=Momentos",
 
   // 5. [OPCIONAL] Para marcar como hecho/pendiente desde la página web:
   //    Crea un Google Apps Script en tu Sheet, publícalo como Web App y pega la URL aquí:

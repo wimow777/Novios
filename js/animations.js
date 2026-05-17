@@ -75,6 +75,7 @@ function createPolaroids() {
     { left: '75%', top: '62%', rot: '-4deg',  duration: '7s',   delay: '0.5s' },
     { left: '3%',  top: '65%', rot: '7deg',   duration: '5s',   delay: '2s'   },
     { left: '82%', top: '37%', rot: '-3deg',  duration: '5.8s', delay: '0.8s' },
+    { left: '2%',  top: '41%', rot: '4deg',   duration: '6.2s', delay: '1.5s' },
   ];
 
   // Pick random photos from the gallery (no repeats). If there are fewer than needed, the rest show the tulip placeholder.
