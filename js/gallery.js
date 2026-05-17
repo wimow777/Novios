@@ -66,7 +66,6 @@ async function deleteCurrentPhoto() {
       })
     });
 
-    // Esperar un breve momento (1.8s) para que Drive borre el archivo y recargar
     setTimeout(async () => {
       try {
         const res = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
@@ -83,7 +82,7 @@ async function deleteCurrentPhoto() {
       delBtn.innerHTML = '<span>Eliminar Foto 🗑️</span>';
       closeLightbox();
       alert('¡Foto eliminada con éxito! 🗑️');
-    }, 1800);
+    }, 5000);
 
   } catch (err) {
     console.error('Error al borrar la foto:', err);

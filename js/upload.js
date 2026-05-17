@@ -201,8 +201,7 @@ async function submitPhoto() {
       body: JSON.stringify(payload)
     });
 
-    // Esperar un breve momento (1.8s) para que Google Drive indexe el nuevo archivo
-    // y recargar las fotos de la galería en segundo plano
+    // Esperar 5s para que Google Drive indexe el nuevo archivo antes de refrescar
     setTimeout(async () => {
       try {
         const res = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
@@ -221,7 +220,7 @@ async function submitPhoto() {
       
       // Mostrar una notificación de éxito o disparar confeti si se desea
       alert('¡Foto subida con éxito! Ya se encuentra en la galería 💜');
-    }, 1800);
+    }, 5000);
 
   } catch (err) {
     console.error('Error en la carga:', err);
