@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diego & Líaa 💜</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- SVG SYMBOLS -->
+<svg style="display:none">
+  <defs>
+    <symbol id="tulip" viewBox="0 0 70 120">
+      <path d="M35 118 Q33 95 35 72" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M35 98 Q16 88 14 68 Q32 80 35 96" fill="currentColor" opacity="0.45"/>
+      <path d="M35 95 Q54 85 56 65 Q38 77 35 93" fill="currentColor" opacity="0.35"/>
+      <ellipse cx="24" cy="42" rx="12" ry="23" fill="currentColor" transform="rotate(-20 24 42)" opacity="0.75"/>
+      <ellipse cx="46" cy="42" rx="12" ry="23" fill="currentColor" transform="rotate(20 46 42)" opacity="0.75"/>
+      <ellipse cx="20" cy="46" rx="10" ry="19" fill="currentColor" transform="rotate(-8 20 46)" opacity="0.9"/>
+      <ellipse cx="50" cy="46" rx="10" ry="19" fill="currentColor" transform="rotate(8 50 46)" opacity="0.9"/>
+      <ellipse cx="35" cy="40" rx="11" ry="25" fill="currentColor"/>
+    </symbol>
+    <symbol id="petal" viewBox="0 0 30 50">
+      <ellipse cx="15" cy="28" rx="10" ry="20" fill="currentColor"/>
+      <ellipse cx="15" cy="30" rx="7" ry="16" fill="currentColor" opacity="0.4"/>
+    </symbol>
+    <symbol id="note" viewBox="0 0 24 32">
+      <circle cx="8" cy="26" r="5" fill="currentColor"/>
+      <rect x="12" y="4" width="2.5" height="22" fill="currentColor" rx="1"/>
+      <path d="M14.5 4 Q22 6 22 12 Q22 18 14.5 16" fill="currentColor" opacity="0.7"/>
+    </symbol>
+    <symbol id="cat" viewBox="0 0 80 80">
+      <ellipse cx="40" cy="52" rx="22" ry="18" fill="currentColor"/>
+      <ellipse cx="40" cy="34" rx="18" ry="16" fill="currentColor"/>
+      <polygon points="24,24 20,8 32,18" fill="currentColor"/>
+      <polygon points="56,24 60,8 48,18" fill="currentColor"/>
+      <circle cx="34" cy="32" r="3" fill="white" opacity="0.8"/>
+      <circle cx="46" cy="32" r="3" fill="white" opacity="0.8"/>
+      <path d="M36 38 Q40 41 44 38" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M28 36 Q20 34 16 36" stroke="white" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <path d="M52 36 Q60 34 64 36" stroke="white" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <path d="M55 62 Q65 58 68 68 Q60 70 55 62Z" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ═══════════════════════════════════════
+     PANTALLA DE CONTRASEÑA + CORTINAS
+══════════════════════════════════════════ -->
+<div id="lock-screen">
+  <div class="curtain curtain-left">
+    <div class="curtain-top-rail"></div>
+    <div class="curtain-folds"></div>
+    <div class="curtain-fringe"></div>
+  </div>
+  <div class="curtain curtain-right">
+    <div class="curtain-top-rail"></div>
+    <div class="curtain-folds"></div>
+    <div class="curtain-fringe"></div>
+  </div>
+
+  <div class="lock-box" onclick="unlockPage()">
+    <div class="lock-sparkles">
+      <span class="sparkle s1">✦</span>
+      <span class="sparkle s2">✦</span>
+      <span class="sparkle s3">✦</span>
+    </div>
+    <p class="lock-pretitle">un año juntos 💜</p>
+    <h1 class="lock-title">Este lugar es nuestro</h1>
+    <p class="lock-subtitle">Bienvenida, mi reinaa ✨</p>
+    <p class="lock-tap-hint">Haz clic para abrir nuestro espacio 💜</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     APLICACIÓN MULTI-VISTA
+══════════════════════════════════════════ -->
+<div id="main-content" class="hidden">
+
+  <!-- ───────────────────────────────────
+       VISTA: HOME HUB
+  ─────────────────────────────────────── -->
+  <div class="app-view" id="view-home">
+    <div class="hero-dots"></div>
+    <div class="hero-petals" id="hero-petals"></div>
+    <div class="float-frames" id="float-frames"></div>
+
+    <!-- Tulipanes esquinas -->
+    <svg class="deco-tulip hero-tl" style="color:#c084fc"><use href="#tulip"/></svg>
+    <svg class="deco-tulip hero-tr" style="color:#a78bfa"><use href="#tulip"/></svg>
+    <svg class="deco-tulip hero-bl" style="color:#ddd6fe"><use href="#tulip"/></svg>
+    <svg class="deco-tulip hero-br" style="color:#c4b5fd"><use href="#tulip"/></svg>
+    <div class="floating-notes" id="hero-notes"></div>
+
+    <!-- Hero content -->
+    <div class="hub-hero reveal">
+      <span class="hub-tag">17 · 05 · 2025 — 17 · 05 · 2026</span>
+      <h1 class="hub-title">Un año,<br/><em>mi reinaa</em></h1>
+      <p class="hub-quote">"el amor debe sentirse como un sueño"</p>
+      <div class="hub-days">
+        <span id="days-count" class="days-number">0</span>
+        <span class="days-label">días juntos</span>
+      </div>
+    </div>
+
+    <!-- Carta embebida en home -->
+    <div class="home-carta-wrap reveal">
+      <div class="carta-sparkles" id="carta-sparkles"></div>
+      <svg class="deco-tulip home-carta-r" style="color:#c084fc"><use href="#tulip"/></svg>
+      <svg class="deco-tulip home-carta-l" style="color:#ddd6fe"><use href="#tulip"/></svg>
+      <div class="letter-wrap">
+        <div class="letter-paper">
+          <svg class="letter-tulip" style="color:#d8b4fe"><use href="#tulip"/></svg>
+          <p class="letter-date">Mayo, 2026</p>
+          <p class="letter-greeting">Mi reinaa,</p>
+          <p>
+            Antes que nada: gracias por aguantarme. Tú misma lo dijiste, y me
+            río cada vez que lo recuerdo, pero de verdad — gracias. Por la
+            paciencia, por el "loviuu" cuando ya era tardísimo y sabías que te
+            ibas a quedar dormida igual.
+          </p>
+          <p>
+            Este año fue INTEC, tapones, bolas, parciales con profes
+            insoportables. Fue juntarnos y terminar viendo Haikyuu. Fue la
+            primera vez que te di flores y tú te fuiste a dormir con ellas.
+          </p>
+          <p>
+            Dijiste que estás agradecida porque nuestros caminos comparten un
+            pedacito de vida. Yo también, mi vida. Yo también.
+          </p>
+          <p>
+            No sé qué viene, pero sé que quiero seguir compartiendo ese
+            pedacito contigo. Dormidas incluidas.
+          </p>
+          <p class="letter-closing">
+            Con todo,<br/>
+            <em>tu niño</em> 💜
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feliz aniversario embebido en home -->
+    <div class="home-cierre-wrap reveal">
+      <div class="cierre-sparkles-bg" id="cierre-sparkles"></div>
+      <svg class="deco-tulip home-cierre-tl" style="color:#c084fc"><use href="#tulip"/></svg>
+      <svg class="deco-tulip home-cierre-br" style="color:#ddd6fe"><use href="#tulip"/></svg>
+      <div class="cierre-inner">
+        <p class="cierre-pretitle">y ojalá sean muchos más</p>
+        <h2 class="cierre-title">Feliz aniversario,<br/><em>mi reinaa</em></h2>
+        <p class="cierre-quote">"Muaaak. Te amo muchoooo."</p>
+        <div class="cierre-days">
+          <span id="days-count-2">365</span> días y contando 💜
+        </div>
+        <div class="cierre-icons">
+          <svg width="24" height="40" style="color:#c084fc"><use href="#tulip"/></svg>
+          <svg width="20" height="28" style="color:#d4a843"><use href="#note"/></svg>
+          <svg width="40" height="40" style="color:#a855f7"><use href="#cat"/></svg>
+          <svg width="20" height="28" style="color:#d4a843"><use href="#note"/></svg>
+          <svg width="24" height="40" style="color:#c084fc"><use href="#tulip"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation cards -->
+    <div class="hub-nav-grid hub-nav-grid--4 reveal">
+      <div class="hub-card hc-soft" onclick="showView('galeria')">
+        <span class="hub-card-icon">📷</span>
+        <span class="hub-card-title">Galería</span>
+        <span class="hub-card-sub">momentos guardados</span>
+      </div>
+      <div class="hub-card hc-gold" onclick="showView('momentos')">
+        <span class="hub-card-icon">🌷</span>
+        <span class="hub-card-title">Nuestra historia</span>
+        <span class="hub-card-sub">lo que hemos vivido</span>
+      </div>
+      <div class="hub-card hc-dark" onclick="showView('gustos')">
+        <span class="hub-card-icon">✨</span>
+        <span class="hub-card-title">Lo que aprendí</span>
+        <span class="hub-card-sub">cosas que son tú</span>
+      </div>
+      <div class="hub-card hc-planes" onclick="showView('planes')">
+        <span class="hub-card-icon">🗺️</span>
+        <span class="hub-card-title">Planes</span>
+        <span class="hub-card-sub">lo que nos falta vivir</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────
+       VISTA: PLANES
+  ─────────────────────────────────────── -->
+  <div class="app-view" id="view-planes">
+    <button class="view-back" onclick="showView('home')">← inicio</button>
+    <svg class="deco-tulip planes-tl" style="color:#c084fc"><use href="#tulip"/></svg>
+    <svg class="deco-tulip planes-br" style="color:#ddd6fe"><use href="#tulip"/></svg>
+
+    <section id="planes">
+      <div class="section-inner">
+        <span class="section-tag">nosotros dos</span>
+        <h2 class="section-title">Planes <em>&amp; metas</em></h2>
+        <p class="planes-hint">Toca ✓ para marcar como hecho 💜</p>
+        <div class="planes-list" id="planes-list">
+          <div class="planes-loading">
+            <svg width="28" height="48" style="color:#c084fc"><use href="#tulip"/></svg>
+            <span>Cargando planes...</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ───────────────────────────────────
+       VISTA: CARTA
+  ─────────────────────────────────────── -->
+  <div class="app-view" id="view-carta">
+    <button class="view-back" onclick="showView('home')">← inicio</button>
+    <div class="carta-sparkles" id="carta-sparkles"></div>
+
+    <section id="carta">
+      <div class="section-bg-dots"></div>
+      <svg class="deco-tulip carta-r" style="color:#c084fc"><use href="#tulip"/></svg>
+      <svg class="deco-tulip carta-l" style="color:#ddd6fe"><use href="#tulip"/></svg>
+
+      <div class="section-inner">
+        <span class="section-tag">para ti</span>
+        <h2 class="section-title">Una carta, <em>Líaa</em></h2>
+        <div class="letter-wrap">
+          <div class="letter-paper reveal">
+            <svg class="letter-tulip" style="color:#d8b4fe"><use href="#tulip"/></svg>
+            <p class="letter-date">Mayo, 2026</p>
+            <p class="letter-greeting">Mi reinaa,</p>
+            <p>
+              Antes que nada: gracias por aguantarme. Tú misma lo dijiste, y me
+              río cada vez que lo recuerdo, pero de verdad — gracias. Por la
+              paciencia, por el "loviuu" cuando ya era tardísimo y sabías que te
+              ibas a quedar dormida igual.
+            </p>
+            <p>
+              Este año fue INTEC, tapones, bolas, parciales con profes
+              insoportables. Fue juntarnos y terminar viendo Haikyuu. Fue la
+              primera vez que te di flores y tú te fuiste a dormir con ellas.
+            </p>
+            <p>
+              Dijiste que estás agradecida porque nuestros caminos comparten un
+              pedacito de vida. Yo también, mi vida. Yo también.
+            </p>
+            <p>
+              No sé qué viene, pero sé que quiero seguir compartiendo ese
+              pedacito contigo. Dormidas incluidas.
+            </p>
+            <p class="letter-closing">
+              Con todo,<br/>
+              <em>tu niño</em> 💜
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ───────────────────────────────────
+       VISTA: GALERÍA
+  ─────────────────────────────────────── -->
+  <div class="app-view" id="view-galeria">
+    <button class="view-back" onclick="showView('home')">← inicio</button>
+
+    <section id="galeria">
+      <svg class="deco-tulip galeria-l" style="color:#e9d5ff"><use href="#tulip"/></svg>
+      <div class="section-inner">
+        <div class="gallery-header-wrap">
+          <div>
+            <span class="section-tag">nosotros</span>
+            <h2 class="section-title">Momentos guardados</h2>
+          </div>
+          <button class="gallery-upload-trigger" id="upload-trigger-btn" onclick="openUploadModal()" style="display:none">
+            <span class="upload-trigger-icon">📤</span>
+            <span class="upload-trigger-text">Subir Foto</span>
+          </button>
+        </div>
+        <div class="gallery-grid" id="gallery-grid">
+          <div class="gallery-placeholder">
+            <svg width="40" height="68" style="color:#c084fc;margin-bottom:.8rem"><use href="#tulip"/></svg>
+            <p>Agrega tus fotos en <code>js/config.js</code></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ───────────────────────────────────
+       VISTA: MOMENTOS
+  ─────────────────────────────────────── -->
+  <div class="app-view" id="view-momentos">
+    <button class="view-back" onclick="showView('home')">← inicio</button>
+    <div class="momentos-petals-wrap" id="momentos-petals"></div>
+
+    <section id="momentos">
+      <div class="section-bg-dots section-bg-dots--light"></div>
+      <svg class="deco-tulip momentos-r" style="color:#ddd6fe"><use href="#tulip"/></svg>
+      <div class="section-inner">
+        <span class="section-tag">nuestra historia</span>
+        <h2 class="section-title">Lo que hemos vivido</h2>
+        <div class="timeline">
+          <div id="timeline-items"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ───────────────────────────────────
+       VISTA: GUSTOS
+  ─────────────────────────────────────── -->
+  <div class="app-view" id="view-gustos">
+    <button class="view-back" onclick="showView('home')">← inicio</button>
+    <div class="gustos-floaties" id="gustos-floaties"></div>
+
+    <section id="gustos">
+      <div class="gustos-bg"></div>
+      <svg class="deco-tulip gustos-tl" style="color:#c084fc"><use href="#tulip"/></svg>
+
+      <div class="section-inner">
+        <span class="section-tag">cosas que son tú</span>
+        <h2 class="section-title">Lo que aprendí de ti</h2>
+
+        <div class="gustos-grid">
+          <div class="gusto-card gc-lila reveal" style="--d:0s">
+            <span class="gusto-emoji">🎬</span>
+            <span class="gusto-name">MCU completo</span>
+            <span class="gusto-sub">Iron Man primero, siempre</span>
+          </div>
+          <div class="gusto-card gc-gold reveal" style="--d:.15s">
+            <span class="gusto-emoji">🎭</span>
+            <span class="gusto-name">Teatro musical</span>
+            <span class="gusto-sub">dramática, pero en el buen sentido</span>
+          </div>
+          <div class="gusto-card gc-flores reveal" style="--d:.3s">
+            <span class="gusto-emoji">🌺</span>
+            <span class="gusto-name">Flores buchonas</span>
+            <span class="gusto-sub">"q pido flores y me traes un jardín"</span>
+          </div>
+          <div class="gusto-card gc-lila reveal" style="--d:.45s">
+            <span class="gusto-emoji">🎸</span>
+            <span class="gusto-name">5SOS</span>
+            <span class="gusto-sub">sueño pendiente: ese concierto</span>
+          </div>
+          <div class="gusto-card gc-soft reveal" style="--d:.6s">
+            <span class="gusto-emoji">🎵</span>
+            <span class="gusto-name">Taylor Swift</span>
+            <span class="gusto-sub">vinilo de Folklore en su cuarto</span>
+          </div>
+          <div class="gusto-card gc-gold reveal" style="--d:.75s">
+            <span class="gusto-emoji">🍦</span>
+            <span class="gusto-name">Dulce de leche</span>
+            <span class="gusto-sub">no hay otro sabor</span>
+          </div>
+          <div class="gusto-card gc-soft reveal" style="--d:.9s">
+            <span class="gusto-emoji">🎵</span>
+            <span class="gusto-name">Morat</span>
+            <span class="gusto-sub">el álbum nuevo la tiene feliz</span>
+          </div>
+          <div class="gusto-card gc-lila reveal" style="--d:1.05s">
+            <span class="gusto-emoji">🍣</span>
+            <span class="gusto-name">Sushi</span>
+            <span class="gusto-sub">la primera vez que vino aquí</span>
+          </div>
+          <div class="gusto-card gc-watson reveal" style="--d:1.2s">
+            <svg class="watson-icon" style="color:white"><use href="#cat"/></svg>
+            <span class="gusto-name">Watson</span>
+            <span class="gusto-sub">mi gato, que ella ya quiere de su lado</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ───────────────────────────────────
+       VISTA: CIERRE
+  ─────────────────────────────────────── -->
+  <div class="app-view" id="view-cierre">
+    <button class="view-back" onclick="showView('home')">← inicio</button>
+
+    <section id="cierre">
+      <svg class="deco-tulip cierre-tl" style="color:#c084fc"><use href="#tulip"/></svg>
+      <svg class="deco-tulip cierre-br" style="color:#ddd6fe"><use href="#tulip"/></svg>
+      <div class="cierre-sparkles-bg" id="cierre-sparkles"></div>
+
+      <div class="section-inner cierre-inner">
+        <p class="cierre-pretitle">y ojalá sean muchos más</p>
+        <h2 class="cierre-title">Feliz aniversario,<br/><em>mi reinaa</em></h2>
+        <p class="cierre-quote">"Muaaak. Te amo muchoooo."</p>
+        <div class="cierre-days">
+          <span id="days-count-2">365</span> días y contando 💜
+        </div>
+        <div class="cierre-icons">
+          <svg width="24" height="40" style="color:#c084fc"><use href="#tulip"/></svg>
+          <svg width="20" height="28" style="color:#d4a843"><use href="#note"/></svg>
+          <svg width="40" height="40" style="color:#a855f7"><use href="#cat"/></svg>
+          <svg width="20" height="28" style="color:#d4a843"><use href="#note"/></svg>
+          <svg width="24" height="40" style="color:#c084fc"><use href="#tulip"/></svg>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</div><!-- /main-content -->
+
+<!-- FAB: Añadir Plan -->
+<button class="section-fab" id="fab-add-plan" onclick="openAddPlanModal()">+</button>
+
+<!-- FAB: Añadir Momento -->
+<button class="section-fab" id="fab-add-momento" onclick="openAddMomentoModal()">+</button>
+
+<!-- MODAL: Añadir Plan -->
+<div id="add-plan-modal" class="edit-modal hidden">
+  <div class="edit-modal-content">
+    <button class="edit-modal-close" onclick="closeAddPlanModal()">✕</button>
+    <h3 class="edit-modal-title">Nuevo plan 🌟</h3>
+    <div class="edit-modal-field">
+      <label>Emoji</label>
+      <input type="text" id="plan-emoji-input" placeholder="🏖️" maxlength="4" />
+    </div>
+    <div class="edit-modal-field">
+      <label>Plan *</label>
+      <input type="text" id="plan-name-input" placeholder="Ej: Ir a la playa juntos" />
+    </div>
+    <div class="edit-modal-field">
+      <label>Descripción (opcional)</label>
+      <input type="text" id="plan-desc-input" placeholder="Ej: Antes de que acabe el año" />
+    </div>
+    <p class="edit-modal-error" id="add-plan-error"></p>
+    <button class="edit-modal-submit" id="add-plan-submit" onclick="submitNewPlan()">Agregar 💜</button>
+  </div>
+</div>
+
+<!-- MODAL: Añadir / Editar Momento -->
+<div id="add-momento-modal" class="edit-modal hidden">
+  <div class="edit-modal-content">
+    <button class="edit-modal-close" onclick="closeAddMomentoModal()">✕</button>
+    <h3 class="edit-modal-title" id="momento-modal-title">Nuevo momento ✨</h3>
+    <div class="edit-modal-field">
+      <label>Fecha *</label>
+      <input type="text" id="momento-date-input" placeholder="Ej: Junio 2025" />
+    </div>
+    <div class="edit-modal-field">
+      <label>Evento *</label>
+      <input type="text" id="momento-event-input" placeholder="Ej: Primera cita" />
+    </div>
+    <div class="edit-modal-field">
+      <label>Descripción (opcional)</label>
+      <input type="text" id="momento-desc-input" placeholder="Ej: Lo que pasó ese día..." />
+    </div>
+    <p class="edit-modal-error" id="add-momento-error"></p>
+    <button class="edit-modal-submit" id="add-momento-submit" onclick="submitMomento()">Guardar 💜</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox hidden">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt=""/>
+  <p id="lightbox-caption"></p>
+  <button id="lightbox-delete-btn" class="lightbox-delete-btn" onclick="deleteCurrentPhoto()" style="display:none">
+    <span>Eliminar Foto 🗑️</span>
+  </button>
+</div>
+
+<!-- UPLOAD MODAL -->
+<div id="upload-modal" class="upload-modal hidden">
+  <div class="upload-modal-content">
+    <button class="upload-modal-close" onclick="closeUploadModal()">✕</button>
+    <h3 class="upload-modal-title">Subir un momento 📸</h3>
+    <p class="upload-modal-sub">Se guardará directamente en tu Google Drive y aparecerá en la galería automáticamente.</p>
+    
+    <div class="upload-drag-area" id="upload-drag-area" onclick="triggerFileSelect()">
+      <div class="drag-area-inner" id="drag-area-inner">
+        <span class="drag-icon">📤</span>
+        <span class="drag-text">Toca aquí para seleccionar una foto</span>
+        <span class="drag-hint">Soporta JPG, PNG, WebP</span>
+      </div>
+      <input type="file" id="upload-file-input" accept="image/*" style="display:none" onchange="handleFileSelect(event)" />
+    </div>
+
+    <div class="upload-input-group">
+      <label for="upload-caption-input" class="upload-label">¿Qué título o descripción le pones?</label>
+      <input type="text" id="upload-caption-input" placeholder="Ej: Nuestra primera cita... (opcional)" autocomplete="off" />
+    </div>
+
+    <button class="upload-submit-btn" id="upload-submit-btn" onclick="submitPhoto()" disabled>
+      <span class="submit-btn-text">Subir foto ✨</span>
+      <span class="submit-btn-spinner"></span>
+    </button>
+    
+    <p id="upload-error-msg" class="upload-error-msg"></p>
+  </div>
+</div>
+
+<!-- CUSTOM CONFIRMATION/ALERT DIALOG -->
+<div id="custom-dialog-modal" class="custom-dialog hidden">
+  <div class="custom-dialog-content">
+    <div class="custom-dialog-icon">💜</div>
+    <p id="custom-dialog-message" class="custom-dialog-message">¿Estás seguro?</p>
+    <div class="custom-dialog-buttons">
+      <button id="custom-dialog-cancel" class="custom-dialog-btn cancel-btn">Cancelar</button>
+      <button id="custom-dialog-confirm" class="custom-dialog-btn confirm-btn">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/animations.js"></script>
+<script src="js/gallery.js"></script>
+<script src="js/upload.js"></script>
+<script src="js/timeline.js"></script>
+<script src="js/planes.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/lock.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
