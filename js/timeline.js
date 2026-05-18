@@ -180,6 +180,7 @@ async function submitMomento() {
     setTimeout(async () => {
       try {
         await loadTimeline();
+        document.getElementById('timeline-items').querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
         if (typeof showToast === 'function') {
           showToast('¡Línea de tiempo sincronizada con éxito! 💜', 'success');
         }
@@ -233,6 +234,7 @@ function deleteMomento(index) {
       setTimeout(async () => {
         try {
           await loadTimeline();
+          document.getElementById('timeline-items').querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
         } catch (err) {
           console.error('Error al resincronizar timeline tras borrar:', err);
         }
