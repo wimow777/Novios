@@ -1140,7 +1140,16 @@ section { padding:6rem 1.5rem; position:relative; overflow:hidden; }
   max-width: 640px;
 }
 @media (max-width: 600px) {
-  .hub-nav-grid--3 { grid-template-columns: 1fr; max-width: 380px; }
+  .hub-nav-grid--3 {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 420px;
+  }
+  .hub-nav-grid--3 .hub-card:last-child {
+    grid-column: 1 / -1;
+    max-width: 200px;
+    margin: 0 auto;
+    width: 100%;
+  }
   .home-carta-r, .home-carta-l,
   .home-cierre-tl, .home-cierre-br { display: none; }
 }
