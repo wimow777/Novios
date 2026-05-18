@@ -4,6 +4,22 @@
 
 let _editingMomentoIndex = null;
 
+// Convierte "Date(2024,8,26)" de Sheets a texto legible como "26 sep 2024"
+function parseSheetDate(raw) {
+  if (!raw) return '';
+  const str = raw.toString();
+  // Formato Date(YYYY,M,D) — el mes en Sheets es 0-indexado
+  const m = str.match(/Date\((\d{4}),(\d+),(\d+)\)/i);
+  if (m) {
+    const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    const d = parseInt(m[3]);
+    const mes = meses[parseInt(m[2])];
+    const y = m[1];
+    return `${d} ${mes} ${y}`;
+  }
+  return str; // Si ya es texto plano, lo devuelve igual
+}
+
 async function loadTimeline() {
   if (CONFIG.timelineUrl) {
     try {
@@ -18,12 +34,13 @@ async function loadTimeline() {
           const parsedMoments = [];
           data.table.rows.forEach(row => {
             if (!row.c || row.c.length === 0) return;
-            const date  = row.c[0] ? row.c[0].v : '';
-            const event = row.c[1] ? row.c[1].v : '';
-            const desc  = row.c[2] ? row.c[2].v : '';
-            if (!date || date === 'Fecha' || date === 'A') return;
+            const rawDate = row.c[0] ? row.c[0].v : '';
+            const event   = row.c[1] ? row.c[1].v : '';
+            const desc    = row.c[2] ? row.c[2].v : '';
+            if (!rawDate || rawDate === 'Fecha' || rawDate === 'A') return;
+            const date = parseSheetDate(rawDate);
             parsedMoments.push({
-              date:  date.toString(),
+              date:  date,
               event: event ? event.toString() : '',
               desc:  desc  ? desc.toString()  : ''
             });
