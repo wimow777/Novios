@@ -41,6 +41,13 @@ jobs:
               f.write(content)
           "
 
+      - name: Verificar inyección (debug)
+        run: |
+          echo "=== Primeras 20 líneas de config.js ==="
+          head -20 js/config.js
+          echo "=== Buscando placeholders que NO se reemplazaron ==="
+          grep '%%' js/config.js || echo "✅ Ningún placeholder encontrado — inyección correcta"
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
