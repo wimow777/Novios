@@ -19,7 +19,7 @@ function drivePhotosToConfig(drivePhotos) {
 async function loadPhotosFromDrive() {
   if (!CONFIG.googleDriveFolderId || !CONFIG.sheetsUpdateUrl) return;
   try {
-    const res  = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
+    const res  = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}&token=${encodeURIComponent(CONFIG.apiToken)}`);
     const data = await res.json();
     if (data && data.photos && data.photos.length > 0) {
       CONFIG.photos = drivePhotosToConfig(data.photos);

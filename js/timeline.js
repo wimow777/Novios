@@ -166,6 +166,7 @@ async function submitMomento() {
     date, event, desc
   };
   if (isEdit) payload.originalDate = originalMoments[_editingMomentoIndex].date;
+  payload.token = CONFIG.apiToken;
 
   try {
     await fetch(CONFIG.sheetsUpdateUrl, {
@@ -225,7 +226,7 @@ function deleteMomento(index) {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: 'deleteMomento', date: m.date, event: m.event })
+        body: JSON.stringify({ action: 'deleteMomento', date: m.date, event: m.event, token: CONFIG.apiToken })
       });
 
       // 2. Silenciosa sincronización tras 4 segundos

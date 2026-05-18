@@ -173,7 +173,7 @@ async function submitNewPlan() {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ action: 'addPlan', emoji, plan: name, desc, estado: 'Pendiente' })
+      body: JSON.stringify({ action: 'addPlan', emoji, plan: name, desc, estado: 'Pendiente', token: CONFIG.apiToken })
     });
 
     // 4. Esperar 4.5 segundos e iniciar sincronización silenciosa
@@ -221,7 +221,7 @@ function deletePlan(event, planName) {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: 'deletePlan', plan: planName })
+        body: JSON.stringify({ action: 'deletePlan', plan: planName, token: CONFIG.apiToken })
       });
 
       // 2. Silenciosa sincronización en background
@@ -273,7 +273,7 @@ async function togglePlanStatus(event, btnEl, planName, currentEstado) {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ plan: planName, estado: nextEstado })
+      body: JSON.stringify({ plan: planName, estado: nextEstado, token: CONFIG.apiToken })
     });
 
     await new Promise(resolve => setTimeout(resolve, 800));

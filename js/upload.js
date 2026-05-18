@@ -219,7 +219,8 @@ async function submitPhoto() {
     folderId: CONFIG.googleDriveFolderId,
     base64Data: selectedFile.base64Data,
     mimeType: selectedFile.mimeType,
-    fileName: uploadFileName
+    fileName: uploadFileName,
+    token: CONFIG.apiToken
   };
 
   try {
@@ -236,7 +237,7 @@ async function submitPhoto() {
     // 5. Esperar 4.5s e iniciar sincronización silenciosa
     setTimeout(async () => {
       try {
-        const res = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
+        const res = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}&token=${encodeURIComponent(CONFIG.apiToken)}`);
         const data = await res.json();
         if (data && data.photos) {
           CONFIG.photos = drivePhotosToConfig(data.photos);

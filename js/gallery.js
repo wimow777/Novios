@@ -121,14 +121,15 @@ function deleteCurrentPhoto() {
         },
         body: JSON.stringify({
           action: 'deletePhoto',
-          fileId: targetId
+          fileId: targetId,
+          token: CONFIG.apiToken
         })
       });
 
       // 3. Sincronización silenciosa en background tras 4 segundos
       setTimeout(async () => {
         try {
-          const res = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}`);
+          const res = await fetch(`${CONFIG.sheetsUpdateUrl}?action=getPhotos&folderId=${CONFIG.googleDriveFolderId}&token=${encodeURIComponent(CONFIG.apiToken)}`);
           const data = await res.json();
           if (data && data.photos) {
             CONFIG.photos = drivePhotosToConfig(data.photos);

@@ -1,0 +1,42 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inyectar secrets en config.js
+        env:
+          SHEETS_URL:        ${{ secrets.SHEETS_URL }}
+          TIMELINE_URL:      ${{ secrets.TIMELINE_URL }}
+          SHEETS_UPDATE_URL: ${{ secrets.SHEETS_UPDATE_URL }}
+          DRIVE_FOLDER_ID:   ${{ secrets.DRIVE_FOLDER_ID }}
+          API_TOKEN:         ${{ secrets.API_TOKEN }}
+        run: |
+          python3 -c "
+          import os
+          with open('js/config.js', 'r') as f:
+              content = f.read()
+          content = content.replace('%%SHEETS_URL%%',        os.environ['SHEETS_URL'])
+          content = content.replace('%%TIMELINE_URL%%',      os.environ['TIMELINE_URL'])
+          content = content.replace('%%SHEETS_UPDATE_URL%%', os.environ['SHEETS_UPDATE_URL'])
+          content = content.replace('%%DRIVE_FOLDER_ID%%',   os.environ['DRIVE_FOLDER_ID'])
+          content = content.replace('%%API_TOKEN%%',         os.environ['API_TOKEN'])
+          with open('js/config.js', 'w') as f:
+              f.write(content)
+          "
+
+      - name: Deploy a GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
